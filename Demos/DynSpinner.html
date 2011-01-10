@@ -1,0 +1,71 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-Strict.dtd">
+<html>
+<head>
+<title>DynSpinner demo</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<style type="text/css">
+	body { font-family: Arial, Helvetica; background-color: #C0C0C0;}
+	p {font-size:9px;}
+
+	#spinnable {height:100px; width:100px; background:#FFE0E0; margin-top:10px; }
+	#spinnable2 {height:220px; height:100px; background:#E0FFE0; margin-top:10px; }
+	#spinnable3 {height:420px; width:300px; background:#E0E0FF; margin-top:10px; }
+	#spinnable2 .dynspinner_element {background:#C0C0FF;}
+	#spinnable3 .dynspinner_element {background:#C0FFFF;}
+
+	.dynspinner_layer {background:#FFFFFF;}
+	.dynspinner_container {}
+</style>
+<script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/mootools/1.2.3/mootools-yui-compressed.js"></script>
+<script type="text/javascript" src="../Source/DynSpinner.js"></script>
+<script type="text/javascript">
+	window.addEvent('domready', function(){
+		try {
+			var spinnable;
+			if ( !!document.createElement('canvas').getContext && false ) {
+				spinnable = new DynSpinner.Canvas.Flower('spinnable');
+			} else if ( document.implementation.hasFeature("http://www.w3.org/TR/SVG11/feature#Shape", "1.0") ) {
+				spinnable = new DynSpinner.SVG.Flower('spinnable');
+			} else {
+				throw "Neither SVG or Canvas capability detected";
+			}
+
+			$('starter').addEvent('click', function()
+				{
+					if (spinnable.startSpin())
+						(function(){ spinnable.stopSpin(); }).delay(10000);
+				}
+			);
+
+			$$('input.radio').addEvent('click', function(e)
+				{
+					spinnable.setTarget( e.target.get('value') );
+				}
+			);
+
+			$('bubbles').addEvent('change', function(e)
+				{
+					spinnable.shape=($('bubbles').checked)?'circle':'pie';
+				}
+			);
+		} catch (err) {
+			alert(err);
+		}
+	});
+</script>
+</head>
+<body>
+<h1>DynSpinner Demo</h1>
+<fieldset>
+<input type="button" id="starter" value="Start spinner (for 10 sec)"/><br/>
+Rebind spinner to :
+<input type="radio" class="radio" name="zone" value="spinnable" checked="checked"/>zone 1
+<input type="radio" class="radio" name="zone" value="spinnable2"/>zone 2
+<input type="radio" class="radio" name="zone" value="spinnable3"/>zone 3<br/>
+<input type="checkbox" id="bubbles"/><label for="bubbles">Bubbles animation</label><br/>
+</fieldset>
+<div id="spinnable"><h4>Zone 1</h4><p>Fixed square size. Spinner will center and take 60% size (default)</p></div>
+<div id="spinnable2"><h4>Zone 2</h4><p>Fixed height. Free width. Spinner take 60% height's size and recenter on resize events.</p></div>
+<div id="spinnable3"><h4>Zone 3</h4><p>Fixed height > width. Spinner take 60% width (default)</p></div>
+</body>
+</html>
