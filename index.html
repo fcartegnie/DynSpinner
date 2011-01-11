@@ -22,9 +22,9 @@
 	window.addEvent('domready', function(){
 		try {
 			var spinnable;
-			if ( !!document.createElement('canvas').getContext && false ) {
+			if ( !!document.createElement('canvas').getContext ) {
 				spinnable = new DynSpinner.Canvas.Flower('spinnable');
-			} else if ( document.implementation.hasFeature("http://www.w3.org/TR/SVG11/feature#Shape", "1.0") ) {
+			} else if ( document.implementation.hasFeature("http://www.w3.org/TR/SVG11/feature#BasicStructure", "1.1") ) {
 				spinnable = new DynSpinner.SVG.Flower('spinnable');
 			} else {
 				throw "Neither SVG or Canvas capability detected";
